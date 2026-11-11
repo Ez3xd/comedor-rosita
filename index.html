@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Menú | Comedor Rosita</title>
   <link rel="stylesheet" href="estilos.css">
+  <script src="menu.js" defer></script>
 </head>
 <body>
   <header>
@@ -13,16 +14,24 @@
   </header>
   <main>
     <h2>Platos y bebidas</h2>
-    <ul class="menu">
-      <li>
+    <div id="filtros" hidden>
+      <label for="categoria">Categoría</label>
+      <select id="categoria" aria-controls="menu">
+        <option value="todas">Todas</option>
+        <option value="platos">Platos</option>
+        <option value="bebidas">Bebidas</option>
+      </select>
+    </div>
+    <ul class="menu" id="menu">
+      <li data-categoria="platos">
         <h3>Pupusas revueltas</h3>
         <p>Queso, frijoles y chicharrón, con curtido y salsa.</p>
       </li>
-      <li>
+      <li data-categoria="platos">
         <h3>Pollo guisado</h3>
         <p>Servido con arroz y ensalada.</p>
       </li>
-      <li>
+      <li data-categoria="bebidas">
         <h3>Fresco de horchata</h3>
         <p>Bebida fría de morro.</p>
       </li>
