@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { fileURLToPath } from "node:url";
 import express, { type ErrorRequestHandler, type Request, type Response } from "express";
 
 type MenuItem = {
@@ -56,6 +57,7 @@ const horariosRetiro = new Set(["11:30", "12:00", "12:30", "13:00", "13:30"]);
 const pedidos: Pedido[] = [];
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
+const host = process.env.HOST ?? "127.0.0.1";
 const adminToken = process.env.ADMIN_TOKEN;
 
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
@@ -182,6 +184,8 @@ app.use("/api", (_req: Request, res: Response) => {
   res.status(404).json({ error: "La ruta solicitada no existe." });
 });
 
+app.use(express.static(fileURLToPath(new URL("../public/", import.meta.url))));
+
 const handleErrors: ErrorRequestHandler = (error, _req, res, _next) => {
   if (typeof error === "object" && error !== null && "status" in error) {
     const status = error.status;
@@ -199,6 +203,6 @@ const handleErrors: ErrorRequestHandler = (error, _req, res, _next) => {
 
 app.use(handleErrors);
 
-app.listen(port, "127.0.0.1", () => {
-  console.log(`API de Comedor Rosita disponible en http://127.0.0.1:${port}`);
+app.listen(port, host, () => {
+  console.log(`API de Comedor Rosita disponible en http://${host}:${port}`);
 });

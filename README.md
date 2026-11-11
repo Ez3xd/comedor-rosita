@@ -6,54 +6,53 @@ Proyecto de cátedra, **Fase 2**. El sitio muestra el menú del día y permite r
 
 - El menú muestra precios y existencias. El formulario permite elegir un plato, la cantidad y la hora de retiro.
 - La API en Express y TypeScript valida el pedido, descuenta las unidades reservadas y permite consultar los pedidos pendientes con un token de administrador.
-- La configuración de Apache sirve el sitio por HTTPS y conecta el navegador con la API. La carpeta `docs/evidencias/` queda disponible para las capturas de la entrega.
+- Docker Compose inicia el sitio en Apache y la API en Express en dos contenedores. Cada compañero puede ejecutarlos en su computadora.
+- La configuración de Apache para HTTPS sigue disponible para la entrega. Guarda las capturas en `docs/evidencias/`.
 
-## Arquitectura
+## Abrir el proyecto con Docker
 
-```mermaid
-flowchart LR
-    C[Cliente / navegador] -->|HTTPS :443| A[Apache]
-    A -->|Archivos estáticos| W[public/]
-    A -->|ProxyPass /api y /health| E[Express + TypeScript :4000]
-    E --> M[Menú y pedidos en memoria]
-```
-
-Los pedidos y el inventario se guardan en memoria en esta fase: se reinician al detener el backend y no se comparten entre procesos. La integración con una base de datos, Docker, varios nodos y Nginx queda para fases posteriores.
-
-La aplicación de esta fase está en `public/`; el `index.html`, `menu.js` y `estilos.css` de la raíz se conservan como prototipo anterior. La configuración de Apache incluida sirve `public/`.
-
-## Requisitos
-
-- Node.js 20 o superior y npm.
-- Apache 2 con `mod_ssl`, `mod_proxy` y `mod_proxy_http`.
-- WSL2/Ubuntu es una opción recomendada para Apache y mkcert. El backend y Apache deben poder comunicarse por `127.0.0.1:4000`.
-
-## Ejecutar el backend
-
-Clona el repositorio y entra a la carpeta del proyecto. Estos comandos funcionan en PowerShell:
+Instala Git y abre Docker Desktop. En PowerShell:
 
 ```powershell
 git clone https://github.com/Ez3xd/comedor-rosita.git
 cd comedor-rosita
+Copy-Item .env.example .env
+notepad .env
+```
+
+En `.env`, reemplaza `ADMIN_TOKEN` por un valor privado, guarda el archivo y ejecuta:
+
+```powershell
+docker compose up --build -d
+```
+
+Abre [Comedor Rosita](http://localhost:8080). Haz un prepedido y usa el mismo token en el panel de cocina para comprobar que aparece. Cada equipo tiene su propio inventario y sus propios pedidos de prueba. Los datos se reinician al reiniciar la API.
+
+Si ya clonaste el proyecto, ejecuta `git pull` y sigue los pasos desde la copia de `.env.example`. Si ya tienes un `.env`, conserva tu token.
+
+Para ver el estado de los contenedores, consultar sus registros o detenerlos:
+
+```powershell
+docker compose ps
+docker compose logs
+docker compose down
+```
+
+## Ejecutar sin Docker (desarrollo)
+
+Con Node.js 20 o superior, ejecuta estos comandos desde la carpeta del proyecto:
+
+```powershell
 npm ci
-$env:ADMIN_TOKEN = "cambia-esto-por-un-token-local"
+$env:ADMIN_TOKEN = "elige-un-token-local"
 npm run dev
 ```
 
-Deja esa terminal abierta. Visita [el estado del servidor](http://127.0.0.1:4000/health) y [el menú de la API](http://127.0.0.1:4000/api/menu) para comprobar que arrancó. Para abrir la interfaz, sigue los pasos de Apache y HTTPS.
+Deja esa terminal abierta y visita **http://127.0.0.1:4000** en el navegador. Desde ahí podrás consultar el menú y probar un pre-pedido. El panel de cocina usa el token que configuraste en `ADMIN_TOKEN`. La página y la API se sirven juntas en el puerto `4000`.
 
-Para compilar y ejecutar la versión generada:
+Para detener el servidor, vuelve a la terminal y presiona `Ctrl+C`.
 
-```powershell
-npm run build
-npm start
-```
-
-En Bash/WSL, configura el token con `export ADMIN_TOKEN='cambia-esto-por-un-token-local'` antes de iniciar el servidor. El token protege `GET /api/pedidos`; no lo compartas ni lo subas al repositorio.
-
-`.env.example` sirve como referencia de las variables; el proyecto no carga archivos `.env` automáticamente.
-
-El backend escucha únicamente en `127.0.0.1:4000`. Si `ADMIN_TOKEN` no está configurado, el menú y los pre-pedidos funcionan, pero la consulta administrativa responde `503`.
+Para probar la configuración HTTPS de la entrega, sigue los pasos de Ubuntu.
 
 ## API
 
@@ -80,7 +79,7 @@ El servidor valida los campos, el horario permitido y las existencias antes de a
 
 ## Apache y HTTPS en WSL2/Ubuntu
 
-Ejecuta estos pasos desde la raíz del proyecto en Ubuntu. Si usas WSL2, inicia también el backend en esa misma distribución y deja su terminal abierta.
+Ejecuta estos pasos desde la raíz del proyecto en Ubuntu. En una terminal de esa misma distribución, inicia el backend con `npm ci`, `export ADMIN_TOKEN='elige-un-token-local'` y `npm run dev`. Deja esa terminal abierta para que Apache pueda acceder a la API en `127.0.0.1:4000`.
 
 1. Instala Apache y mkcert si aún no están disponibles. Habilita los módulos necesarios:
 
@@ -125,18 +124,19 @@ Ejecuta estos pasos desde la raíz del proyecto en Ubuntu. Si usas WSL2, inicia 
 
 5. Añade `127.0.0.1 rosita.local` al archivo `hosts` del sistema donde se abre el navegador. En Windows está en `C:\Windows\System32\drivers\etc\hosts`. En WSL, confirma que Apache esté accesible desde Windows por `localhost`; si la red de WSL está configurada de otra forma, usa la dirección que corresponda en `hosts`.
 
-6. Inicia el backend, abre `https://rosita.local` y verifica la API en `https://rosita.local/api/menu`. Para probar el proxy desde WSL:
+6. Abre `https://rosita.local` y verifica la API en `https://rosita.local/api/menu`. Para probar el proxy y el backend desde WSL:
 
    ```bash
    curl -i https://rosita.local/api/menu
    curl -i https://rosita.local/health
+   curl -i http://127.0.0.1:4000/health
    ```
 
 Apache redirige HTTP a HTTPS. Para probar sin Apache, consulta `http://127.0.0.1:4000/api/menu`.
 
 ## Comprobaciones
 
-1. Abre [el sitio local](https://rosita.local) y confirma que el menú muestra los platos y sus existencias.
+1. Abre [el sitio en Docker](http://localhost:8080) o [el sitio con HTTPS](https://rosita.local) y confirma que el menú muestra los platos y sus existencias.
 2. Haz un pedido de prueba con una unidad de un plato disponible. Comprueba que se confirma y que el plato queda con una unidad menos.
 3. Ingresa el token configurado en el panel de administración y comprueba que aparece el pedido.
 
@@ -148,7 +148,7 @@ npm run build
 Prueba el listado administrativo enviando el token configurado:
 
 ```powershell
-curl.exe -H "Authorization: Bearer cambia-esto-por-un-token-local" http://127.0.0.1:4000/api/pedidos
+curl.exe -H "Authorization: Bearer TU_TOKEN" http://localhost:8080/api/pedidos
 ```
 
 ## Evidencias de la entrega
