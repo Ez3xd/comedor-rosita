@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f2eb">
+    <meta name="description" content="Mira el menú de hoy de Comedor Rosita y aparta tu almuerzo antes de llegar.">
+    <title>Comedor Rosita — Almuerzo de casa, a tu tiempo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement">
+      <span class="announcement-dot" aria-hidden="true"></span>
+      Cocina abierta hoy · 11:30 a. m. – 2:00 p. m.
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Comedor Rosita, inicio">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-copy"><strong>Comedor Rosita</strong><small>COMIDA CON CARIÑO</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="#menu">Menú de hoy</a>
+        <a href="#como-funciona">Cómo funciona</a>
+      </nav>
+      <a class="header-cta" href="#pedido">Apartar mi almuerzo <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> SABOR DE CASA, SIN LA ESPERA</p>
+          <h1>Tu almuerzo<br>ya te está <em>esperando.</em></h1>
+          <p class="hero-description">Mira lo que cocinamos hoy, aparta tu plato y pasa a recogerlo. Así de sencillo; así de rico.</p>
+          <a class="button button-dark" href="#menu">Ver el menú de hoy <span aria-hidden="true">↓</span></a>
+          <div class="hero-note">
+            <span class="note-icon" aria-hidden="true">✳</span>
+            <p>Hecho fresco cada mañana.<br><strong>Como en casa, de verdad.</strong></p>
+          </div>
+        </div>
+        <div class="hero-art" role="img" aria-label="Ilustración de un plato de comida casera">
+          <div class="sun-shape"></div>
+          <div class="plate plate-outer"><div class="plate plate-inner">
+            <div class="meal-rice"></div><div class="meal-beans"></div><div class="meal-chicken"></div>
+            <div class="meal-salad"></div><span class="meal-herb">✳</span>
+          </div></div>
+          <span class="art-caption caption-top">SABOR HECHO EN CASA</span>
+          <span class="art-caption caption-bottom">Desde temprano, para ti.</span>
+          <span class="art-stamp">BUENO<br>Y HECHO<br>CON AMOR</span>
+        </div>
+      </section>
+
+      <section class="menu-section section-wrap" id="menu">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> LO QUE SALE DE NUESTRA COCINA</p>
+            <h2>El menú <em>de hoy</em></h2>
+          </div>
+          <p class="menu-date" id="menu-date">Preparado fresco cada día</p>
+        </div>
+        <div class="menu-layout">
+          <div class="menu-grid" id="menu-grid" aria-live="polite">
+            <p class="loading-message">Estamos revisando qué salió de la cocina…</p>
+          </div>
+          <aside class="order-card" id="pedido">
+            <div class="order-card-top">
+              <span class="order-icon" aria-hidden="true">↗</span>
+              <p class="eyebrow">TU PAUSA, A TU HORA</p>
+              <h3>Aparta tu<br><em>almuerzo</em></h3>
+              <p class="order-intro">Cuéntanos qué se te antoja y a qué hora pasas. Lo dejamos listo para ti.</p>
+            </div>
+            <form id="order-form">
+              <label for="plato">Tu plato</label>
+              <select id="plato" name="platoId" required disabled>
+                <option value="">Cargando el menú…</option>
+              </select>
+
+              <div class="form-row">
+                <div>
+                  <label for="cantidad">Porciones</label>
+                  <select id="cantidad" name="cantidad">
+                    <option value="1">1 porción</option>
+                    <option value="2">2 porciones</option>
+                    <option value="3">3 porciones</option>
+                    <option value="4">4 porciones</option>
+                    <option value="5">5 porciones</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="hora">Hora de retiro</label>
+                  <select id="hora" name="horaRetiro" required>
+                    <option value="11:30">11:30 a. m.</option>
+                    <option value="12:00">12:00 p. m.</option>
+                    <option value="12:30">12:30 p. m.</option>
+                    <option value="13:00">1:00 p. m.</option>
+                    <option value="13:30">1:30 p. m.</option>
+                  </select>
+                </div>
+              </div>
+
+              <label for="cliente">Tu nombre</label>
+              <input id="cliente" name="cliente" type="text" autocomplete="name" minlength="2" maxlength="80" placeholder="¿A nombre de quién?" required>
+              <label for="telefono">Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" inputmode="numeric" autocomplete="tel" pattern="[0-9]{4}-?[0-9]{4}" placeholder="7777-1234" aria-describedby="phone-hint" required>
+              <span class="field-hint" id="phone-hint">Un número de 8 dígitos para confirmar tu pedido.</span>
+              <button class="button button-terracotta submit-button" type="submit" disabled>Elige tu plato <span aria-hidden="true">→</span></button>
+              <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+              <p class="privacy-note">Tu pedido queda reservado al confirmar. No necesitas pagar en línea.</p>
+            </form>
+          </aside>
+        </div>
+      </section>
+
+      <section class="how-section" id="como-funciona">
+        <div class="section-wrap how-inner">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> SIN COMPLICACIONES</p>
+            <h2>Almuerza bien.<br><em>A tu propio ritmo.</em></h2>
+          </div>
+          <div class="steps">
+            <article class="step"><span>01</span><div><h3>Elige lo que se te antoja</h3><p>El menú de hoy está aquí, con porciones disponibles y precio claro.</p></div></article>
+            <article class="step"><span>02</span><div><h3>Cuéntanos cuándo pasas</h3><p>Déjanos tu nombre y el horario de retiro que mejor te quede.</p></div></article>
+            <article class="step"><span>03</span><div><h3>Recoge y disfruta</h3><p>Tu comida queda apartada. Llegas, la recoges y sigues con tu día.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-section section-wrap">
+        <details class="admin-panel">
+          <summary>Acceso para cocina <span>Pedidos del día</span></summary>
+          <form id="admin-form" class="admin-form">
+            <label for="admin-token">Token administrativo</label>
+            <input id="admin-token" type="password" autocomplete="current-password" placeholder="Ingresa el token configurado en el servidor" required>
+            <button class="button button-dark" type="submit">Ver pedidos</button>
+          </form>
+          <p class="admin-message" id="admin-message" role="status"></p>
+          <div class="orders-list" id="orders-list"></div>
+        </details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#inicio">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-copy"><strong>Comedor Rosita</strong><small>COMIDA CON CARIÑO</small></span>
+      </a>
+      <p>Un buen almuerzo también puede ser sencillo.</p>
+      <span>Hecho con cariño, todos los días.</span>
+    </footer>
+  </body>
+</html>
