@@ -1,0 +1,51 @@
+:root {
+  color-scheme: light;
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: #34251e;
+  background: #fff8ee;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  padding: 3rem 1.25rem;
+  background: #773421;
+  color: #fff8ee;
+  text-align: center;
+}
+
+h1, h3, p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 8vw, 4rem);
+}
+
+main {
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.menu li {
+  padding: 1.25rem;
+  border: 1px solid #e5cbb6;
+  border-radius: .75rem;
+  background: #fff;
+}
+
+.menu p {
+  margin-top: .5rem;
+  line-height: 1.5;
+}
