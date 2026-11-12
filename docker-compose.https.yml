@@ -1,0 +1,14 @@
+services:
+  web:
+    command:
+      - httpd-foreground
+      - -c
+      - Include conf/extra/rosita.conf
+      - -c
+      - Include conf/extra/rosita-ssl.conf
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+    volumes:
+      - ./infra/apache/docker-ssl.conf:/usr/local/apache2/conf/extra/rosita-ssl.conf:ro
+      - ./infra/apache/certs:/usr/local/apache2/conf/certs:ro

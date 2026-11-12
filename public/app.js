@@ -10,6 +10,12 @@ const ordersList = document.querySelector("#orders-list");
 
 let menuItems = [];
 
+const dishImages = new Map([
+  [1, "/images/pollo-guisado.webp"],
+  [2, "/images/carne-asada.webp"],
+  [3, "/images/sopa-gallina.webp"],
+]);
+
 const formatPrice = (price) =>
   new Intl.NumberFormat("es-SV", { style: "currency", currency: "USD" }).format(price);
 
@@ -27,12 +33,13 @@ function renderMenu(items) {
   menuGrid.innerHTML = "";
   menuSelect.replaceChildren(new Option("Selecciona un plato", ""));
 
-  for (const [index, item] of items.entries()) {
+  for (const item of items) {
     const available = item.unidadesDisponibles > 0;
+    const image = dishImages.get(item.id);
     const card = document.createElement("article");
     card.className = `dish-card${available ? "" : " unavailable"}`;
     card.innerHTML = `
-      <div class="dish-art dish-art-${index + 1}" aria-hidden="true"><div class="mini-plate"></div></div>
+      <div class="dish-art">${image ? `<img src="${image}" alt="" width="900" height="600" loading="lazy" decoding="async">` : ""}</div>
       <div class="dish-info">
         <p class="dish-category">${escapeHtml(item.categoria)}</p>
         <h3>${escapeHtml(item.nombre)}</h3>

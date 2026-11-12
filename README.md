@@ -2,6 +2,18 @@
 
 Proyecto de cátedra, **Fase 2**. El sitio muestra el menú del día y permite reservar platos para recogerlos en el comedor.
 
+## Arquitectura
+
+~~~mermaid
+flowchart LR
+    navegador["Navegador"] -->|"HTTPS · rosita.local:443"| apache["Apache · VirtualHost"]
+    apache -->|"Archivos estáticos"| public["public/ · HTML, CSS, JS e imágenes"]
+    apache -->|"ProxyPass /api/"| express["Express / TypeScript · puerto 4000"]
+    express -->|"Consulta y actualiza"| menu["Menú, existencias y prepedidos"]
+~~~
+
+El [laboratorio del Equipo 03](https://github.com/Oscxr29/gsw-practico-unidad2-equipo03) documenta cómo trasladaron el esquema de `blog.local` a `dulcehogar.local`. Rosita continúa esa práctica con un VirtualHost propio, archivos estáticos servidos por Apache, HTTPS con mkcert y un proxy hacia Express. Se usa `rosita.local` en el puerto HTTPS estándar (443) y Express en el 4000. En Docker el destino del proxy es `api:4000`; en Ubuntu es `127.0.0.1:4000`. El puerto del backend queda interno.
+
 ## Qué se actualizó
 
 - El menú muestra precios y existencias. El formulario permite elegir un plato, la cantidad y la hora de retiro.
@@ -37,6 +49,28 @@ docker compose ps
 docker compose logs
 docker compose down
 ```
+
+## HTTPS con Docker Desktop en Windows
+
+1. Instala [mkcert](https://github.com/FiloSottile/mkcert#installation). En PowerShell, desde la raíz del proyecto, genera el certificado para el VirtualHost e instala la CA local en Windows:
+
+   ```powershell
+   New-Item -ItemType Directory -Force infra/apache/certs | Out-Null
+   mkcert -install
+   mkcert -cert-file infra/apache/certs/rosita.local.pem -key-file infra/apache/certs/rosita.local-key.pem rosita.local
+   ```
+
+2. Añade `127.0.0.1 rosita.local` a `C:\Windows\System32\drivers\etc\hosts` como administrador. La entrada de `blog.local` puede coexistir con la de Rosita. Deja libres los puertos 80 y 443 para el Apache de Docker. Si ya los usa el Apache de la práctica, utiliza la configuración de Ubuntu de esta guía en ese mismo Apache.
+
+3. Desde la raíz del proyecto, con el archivo `.env` ya configurado, ejecuta:
+
+   ```powershell
+   docker compose -f docker-compose.yml -f docker-compose.https.yml up --build -d
+   docker compose -f docker-compose.yml -f docker-compose.https.yml ps
+   docker compose logs api
+   ```
+
+4. Abre [el sitio](https://rosita.local/) y [la API del menú](https://rosita.local/api/menu). Apache redirige HTTP a HTTPS. Para validar los VirtualHost del contenedor, ejecuta `docker compose exec web httpd -t -c "Include conf/extra/rosita.conf" -c "Include conf/extra/rosita-ssl.conf"`.
 
 ## Ejecutar sin Docker (desarrollo)
 
@@ -79,7 +113,7 @@ El servidor valida los campos, el horario permitido y las existencias antes de a
 
 ## Apache y HTTPS en WSL2/Ubuntu
 
-Ejecuta estos pasos desde la raíz del proyecto en Ubuntu. En una terminal de esa misma distribución, inicia el backend con `npm ci`, `export ADMIN_TOKEN='elige-un-token-local'` y `npm run dev`. Deja esa terminal abierta para que Apache pueda acceder a la API en `127.0.0.1:4000`.
+Ejecuta estos pasos desde la raíz del proyecto en Ubuntu. En una terminal de esa misma distribución, prepara el backend con `npm ci` y `npm run build`. Configura `export ADMIN_TOKEN='elige-un-token-local'` y ejecuta `node dist/index.js`. Deja esa terminal abierta para que Apache pueda acceder a la API en `127.0.0.1:4000`.
 
 1. Instala Apache y mkcert si aún no están disponibles. Habilita los módulos necesarios:
 
@@ -153,4 +187,11 @@ curl.exe -H "Authorization: Bearer TU_TOKEN" http://localhost:8080/api/pedidos
 
 ## Evidencias de la entrega
 
-Agrega capturas reales a `docs/evidencias/` después de configurar Apache y mkcert: sitio servido por Apache, menú a través de `/api/menu` y navegador mostrando HTTPS sin advertencias. Las capturas dependen del entorno local y no se incluyen como evidencia simulada.
+Guarda las capturas reales en `docs/evidencias/`.
+
+| Puntos | Evidencia | Qué debe verse |
+|---|---|---|
+| 3 | Contenedor | JSON de los platos en `https://rosita.local/api/menu`. Como complemento, `docker compose ps` y `docker compose logs api` con Express en el puerto 4000. |
+| 3 | Apache y reverse proxy | Una captura del menú ilustrado en `https://rosita.local/` y otra del JSON en `https://rosita.local/api/menu`. |
+| 2 | HTTPS | URL con `https://` y panel de información del sitio abierto, mostrando que la conexión es segura. |
+| 2 | Repositorio | Una captura de la raíz en GitHub con `src/`, `package.json` y `README.md`, y otra del README con el diagrama de arquitectura visible. |

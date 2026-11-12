@@ -75,16 +75,8 @@ h1 em, h2 em, h3 em { color: var(--terracotta); font-weight: 500; }
 .loading-message, .menu-error { grid-column: 1/-1; padding: 30px 0; color: var(--muted); font-size: 13px; }
 .menu-error { color: #9e4935; }
 .dish-card { display: flex; min-height: 288px; flex-direction: column; border: 1px solid var(--line); background: #faf8f3; }
-.dish-art { position: relative; display: grid; height: 128px; place-items: center; overflow: hidden; background: #e6e3d4; }
-.dish-art::before { position: absolute; width: 120px; height: 120px; border: 1px solid #88907850; border-radius: 50%; content: ""; }
-.dish-art::after { position: absolute; width: 94px; height: 94px; border-radius: 50%; background: #f5f1e8; box-shadow: 0 5px 12px #29271b1c; content: ""; }
-.mini-plate { z-index: 1; width: 84px; height: 84px; border: 7px solid #f5f1e8; border-radius: 50%; background: radial-gradient(ellipse at 28% 28%, #eee4c9 0 18%, transparent 19%), radial-gradient(ellipse at 70% 66%, #a95432 0 21%, transparent 22%), radial-gradient(ellipse at 70% 29%, #574433 0 17%, transparent 18%), radial-gradient(ellipse at 30% 72%, #728653 0 15%, transparent 16%), #e3dcc7; box-shadow: 0 5px 12px #29271b1c; }
-.dish-art-2 { background: #e9ded1; }
-.dish-art-2::before { border-color: #b77c6550; }
-.dish-art-2 .mini-plate { background: radial-gradient(ellipse at 29% 29%, #dbc99b 0 19%, transparent 20%), radial-gradient(ellipse at 66% 64%, #a45639 0 23%, transparent 24%), radial-gradient(ellipse at 70% 27%, #584638 0 16%, transparent 17%), radial-gradient(ellipse at 30% 73%, #728653 0 15%, transparent 16%), #e3dcc7; }
-.dish-art-3 { background: #e0e5d8; }
-.dish-art-3::before { border-color: #71845d55; }
-.dish-art-3 .mini-plate { background: radial-gradient(ellipse at 50% 50%, #be8754 0 45%, transparent 46%), radial-gradient(circle at 29% 35%, #81945a 0 7%, transparent 8%), radial-gradient(circle at 67% 31%, #d7be68 0 7%, transparent 8%), radial-gradient(circle at 66% 68%, #778b52 0 8%, transparent 9%), #e3dcc7; }
+.dish-art { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: #e6e3d4; }
+.dish-art img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
 .dish-info { display: flex; flex: 1; flex-direction: column; padding: 15px 15px 13px; }
 .dish-category { margin: 0 0 7px; color: var(--green); font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .dish-info h3 { margin: 0 0 7px; font: 600 17px var(--serif); }
@@ -178,9 +170,7 @@ h1 em, h2 em, h3 em { color: var(--terracotta); font-weight: 500; }
   .menu-date { margin-top: 12px; }
   .menu-grid { grid-template-columns: 1fr; gap: 12px; }
   .dish-card { min-height: 0; display: grid; grid-template-columns: 112px 1fr; }
-  .dish-art { height: 100%; min-height: 145px; }
-  .dish-art::before { width: 90px; height: 90px; }
-  .dish-art::after { width: 70px; height: 70px; }
+  .dish-art { height: 100%; min-height: 145px; aspect-ratio: auto; }
   .dish-info { padding: 13px 12px; }
   .dish-description { min-height: 0; margin-bottom: 10px; }
   .order-card { display: block; padding: 21px 18px; }
