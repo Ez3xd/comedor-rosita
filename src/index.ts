@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import { hostname } from "node:os";
 import { fileURLToPath } from "node:url";
 import express, { type ErrorRequestHandler, type Request, type Response } from "express";
 
@@ -176,6 +177,7 @@ app.get("/health", (_req: Request, res: Response) => {
   res.json({
     estado: "saludable",
     servicio: "comedor-rosita-api",
+    nodo: hostname(),
     fecha: new Date().toISOString(),
   });
 });

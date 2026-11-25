@@ -1,0 +1,25 @@
+services:
+  web:
+    image: httpd:2.4-alpine
+    command: ["httpd-foreground", "-c", "Include conf/extra/rosita.conf"]
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./public:/usr/local/apache2/htdocs:ro
+      - ./infra/apache/docker.conf:/usr/local/apache2/conf/extra/rosita.conf:ro
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comedor-rosita-api:local
+    container_name: comedor-rosita-api
+    environment:
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Configura ADMIN_TOKEN en el archivo .env}
+      HOST: 0.0.0.0
+      PORT: 4000
+      NODE_ENV: production
+    restart: unless-stopped

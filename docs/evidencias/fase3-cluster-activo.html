@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8"><style>body{margin:35px;background:#111827;color:#e5e7eb;font-family:Consolas,monospace}h1{font-size:25px;color:#6ee7b7}p{color:#9ca3af;font-size:16px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:17px;line-height:1.6;background:#030712;padding:24px;border:1px solid #374151;border-radius:10px}</style><h1>Comedor Rosita — fase3-cluster-activo</h1><p>Registro real de comandos Docker y peticiones HTTP · 25/11/2026<br>Vista del archivo fase3-cluster-activo.txt · Captura del registro en navegador</p><pre>NAME                          IMAGE                      COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+comedor-rosita-main-lb-1      nginx:alpine               &quot;/docker-entrypoint.…&quot;   lb        21 seconds ago   Up 12 seconds             0.0.0.0:8090-&gt;80/tcp, [::]:8090-&gt;80/tcp
+comedor-rosita-main-nodo1-1   comedor-rosita-api:local   &quot;docker-entrypoint.s…&quot;   nodo1     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
+comedor-rosita-main-nodo2-1   comedor-rosita-api:local   &quot;docker-entrypoint.s…&quot;   nodo2     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
+comedor-rosita-main-nodo3-1   comedor-rosita-api:local   &quot;docker-entrypoint.s…&quot;   nodo3     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
+</pre>

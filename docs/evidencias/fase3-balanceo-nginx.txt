@@ -1,0 +1,6 @@
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo1","fecha":"2026-11-25T17:15:48.165Z"} HTTP 200
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo2","fecha":"2026-11-25T17:15:48.257Z"} HTTP 200
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo3","fecha":"2026-11-25T17:15:48.322Z"} HTTP 200
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo1","fecha":"2026-11-25T17:15:48.378Z"} HTTP 200
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo2","fecha":"2026-11-25T17:15:48.438Z"} HTTP 200
+{"estado":"saludable","servicio":"comedor-rosita-api","nodo":"nodo3","fecha":"2026-11-25T17:15:48.503Z"} HTTP 200

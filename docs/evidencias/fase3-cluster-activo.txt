@@ -1,0 +1,5 @@
+NAME                          IMAGE                      COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+comedor-rosita-main-lb-1      nginx:alpine               "/docker-entrypoint.…"   lb        21 seconds ago   Up 12 seconds             0.0.0.0:8090->80/tcp, [::]:8090->80/tcp
+comedor-rosita-main-nodo1-1   comedor-rosita-api:local   "docker-entrypoint.s…"   nodo1     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
+comedor-rosita-main-nodo2-1   comedor-rosita-api:local   "docker-entrypoint.s…"   nodo2     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
+comedor-rosita-main-nodo3-1   comedor-rosita-api:local   "docker-entrypoint.s…"   nodo3     21 seconds ago   Up 19 seconds (healthy)   4000/tcp
